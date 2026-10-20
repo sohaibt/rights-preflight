@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rights-preflight"
+version = "0.1.0"
+description = "Rights gate for creative assets: find fonts, images, audio, video and 3D files with missing or conflicting licenses, and write CREDITS.md."
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Sohaib Thiab" }]
+requires-python = ">=3.9"
+keywords = ["license-compliance", "attribution", "creative-assets", "fonts", "ai-art", "github-action", "preflight", "credits"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Environment :: Console",
+    "Topic :: Multimedia",
+    "Topic :: Software Development :: Quality Assurance",
+]
+
+[project.urls]
+Homepage = "https://github.com/sohaibt/rights-preflight"
+Issues = "https://github.com/sohaibt/rights-preflight/issues"
+
+[project.scripts]
+rights-preflight = "rights_preflight.__main__:main"
+
+[tool.setuptools]
+packages = ["rights_preflight"]

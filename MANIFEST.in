@@ -1,0 +1,4 @@
+include LICENSE README.md action.yml
+graft tests
+global-exclude *.py[cod]
+prune tests/__pycache__
