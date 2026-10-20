@@ -1,0 +1,10 @@
+{
+  "rules": [
+    {
+      "glob": "audio/*",
+      "license": "CC0",
+      "author": "Freesound user",
+      "source": "https://freesound.org/s/1/"
+    }
+  ]
+}
