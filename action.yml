@@ -1,0 +1,30 @@
+name: rights-preflight
+description: Fail the build when fonts, images, audio, video or 3D files have missing or conflicting rights.
+branding:
+  icon: shield
+  color: green
+inputs:
+  path:
+    description: Folder to check.
+    default: "."
+  commercial:
+    description: Set to "true" to also fail on non-commercial (NC) licenses.
+    default: "false"
+  credits:
+    description: Set to "true" to also write CREDITS.md into the folder.
+    default: "false"
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      env:
+        RP_PATH: ${{ inputs.path }}
+        RP_COMMERCIAL: ${{ inputs.commercial }}
+        RP_CREDITS: ${{ inputs.credits }}
+        PYTHONPATH: ${{ github.action_path }}
+      run: |
+        set -euo pipefail
+        args=()
+        if [ "$RP_COMMERCIAL" = "true" ]; then args+=(--commercial); fi
+        if [ "$RP_CREDITS" = "true" ]; then python3 -m rights_preflight credits "$RP_PATH"; fi
+        python3 -m rights_preflight check "$RP_PATH" "${args[@]+"${args[@]}"}"
