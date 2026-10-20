@@ -244,3 +244,31 @@ def write_manifest(files, path):
     with open(path, "w", encoding="utf-8") as f:
         json.dump({"tool": "rights-preflight", "version": __version__, "files": files}, f, indent=2, ensure_ascii=False)
         f.write("\n")
+
+
+def check(files, commercial=False):
+    """Return a list of problems: dicts with path, code and message. Empty list means ship it."""
+    problems = []
+
+    def add(f, code, msg):
+        problems.append({"path": f["path"], "code": code, "message": msg})
+
+    for f in files:
+        for err in f.get("errors", []):
+            add(f, "bad-sidecar", err)
+        r = f["rights"]
+        lid = r["license_id"]
+        if not r["license"]:
+            add(f, "missing-license", "no license in sidecar, rights.json or embedded metadata")
+            continue
+        if not lid:
+            add(f, "unknown-license", "unknown license: " + r["license"])
+            continue
+        lic = LICENSES[lid]
+        if lic["attribution"]:
+            for field in ("author", "source"):
+                if not r[field]:
+                    add(f, "missing-" + field, lid + " requires attribution: add " + field)
+        if commercial and not lic["commercial"]:
+            add(f, "non-commercial", lid + " does not allow commercial use")
+    return problems
