@@ -51,6 +51,7 @@ class CliTest(unittest.TestCase):
         code, out, _ = run("check", os.path.join(FIX, "project"), "--commercial")
         self.assertEqual(code, 1)
         self.assertIn("images/nc.png: non-commercial", out)
+        self.assertIn("1 problem in 1 of 5 files", out)
         self.assertEqual(run("check", os.path.join(FIX, "broken"))[0], 1)
 
     def test_check_json(self):

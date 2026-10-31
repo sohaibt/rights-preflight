@@ -6,6 +6,10 @@ import sys
 from . import __version__, check, credits_markdown, scan, write_manifest
 
 
+def count(n, word):
+    return "%d %s%s" % (n, word, "" if n == 1 else "s")
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(prog="rights-preflight", description="Rights gate for creative assets.")
     ap.add_argument("--version", action="version", version=__version__)
@@ -36,7 +40,7 @@ def main(argv=None):
         write_manifest(files, out)
         for f in files:
             print("%-6s %10d  %-20s %s" % (f["type"], f["size"], f["rights"]["license_id"] or "-", f["path"]))
-        print("%d media files -> %s" % (len(files), out))
+        print("%s -> %s" % (count(len(files), "media file"), out))
         return 0
 
     if args.cmd == "credits":
@@ -54,8 +58,8 @@ def main(argv=None):
         for p in problems:
             print("%s: %s: %s" % (p["path"], p["code"], p["message"]))
         bad = len({p["path"] for p in problems})
-        print("%d problems in %d of %d files" % (len(problems), bad, len(files)) if problems
-              else "OK: %d files checked" % len(files))
+        print("%s in %d of %s" % (count(len(problems), "problem"), bad, count(len(files), "file")) if problems
+              else "OK: %s checked" % count(len(files), "file"))
     return 1 if problems else 0
 
 
