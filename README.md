@@ -7,8 +7,10 @@ It runs locally or in CI. Python standard library only, no dependencies.
 ## Install
 
 ```bash
-pip install rights-preflight
+pip install git+https://github.com/sohaibt/rights-preflight
 ```
+
+Not on PyPI yet. Needs Python 3.9+.
 
 ## Usage
 
